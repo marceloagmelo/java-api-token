@@ -13,7 +13,7 @@ public class AuthenticationService {
     }
 
     public Authenticate authenticate(Authentication authentication) {
-        Authenticate auth = new Authenticate(jwtService.generateToken(authentication));
+        Authenticate auth = new Authenticate("Bearer", "3600", jwtService.generateToken(authentication));
         return auth;
     }
 }

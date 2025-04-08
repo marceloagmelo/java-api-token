@@ -21,11 +21,17 @@ public class AuthenticatedUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        if (user != null) {
+            return user.getPassword();
+        }
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        if (user != null) {
+            return user.getUsername();
+        }
+        return null;
     }
 }

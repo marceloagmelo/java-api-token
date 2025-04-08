@@ -2,6 +2,9 @@ package com.java.api.token.service;
 
 import com.java.api.token.dto.UserDTO;
 import com.java.api.token.entity.User;
+import com.java.api.token.exception.UsuarioInexistenteException;
+import com.java.api.token.exception.UsuarioNomeJaExistenteException;
+import com.java.api.token.exception.UsuarioNomeObrigatorioException;
 import com.java.api.token.model.AuthenticatedUser;
 import com.java.api.token.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,8 +26,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User register(UserDTO userDTO) {
-        System.out.println("Request body: " + userDTO);
+    public User register(UserDTO userDTO) throws UsuarioNomeJaExistenteException, UsuarioNomeObrigatorioException {
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        if (user != null) {
+            throw new UsuarioNomeJaExistenteException();
+        };
+
+        if("".equals(userDTO.getUsername())) {
+            throw new UsuarioNomeObrigatorioException();
+        };
 
         User u = new User();
         u.setUsername(userDTO.getUsername());
@@ -41,5 +51,14 @@ public class UserService implements UserDetailsService {
 
     public List<User> listUsers() {
         return userRepository.findAll();
+    }
+
+    public void excluir(int id) throws UsuarioInexistenteException {
+        User user = userRepository.findByIdUser(id);
+
+        if (user == null) {
+            throw new UsuarioInexistenteException();
+        }
+        userRepository.deleteById(user.getId());
     }
 }

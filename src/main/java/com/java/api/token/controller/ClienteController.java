@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/clientes")
 @Tag(name = "open-api")
-@CrossOrigin
 public class ClienteController {
 
     @Autowired
